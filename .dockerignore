@@ -1,0 +1,29 @@
+# === Python-related ===
+# Virtual environments
+venv/
+
+# Python cache and compiled files
+__pycache__/
+*.pyc
+*.pyo
+
+# === IDE / Editor ===
+# Project settings and local configs
+.idea/
+.vscode/
+
+# === Git ===
+.git
+.gitignore
+
+# === Docker ===
+Dockerfile
+.dockerignore
+
+# === Misc ===
+# Local environment variables
+.env
+
+# Docs, readme, etc.
+README.md
+LICENSE
