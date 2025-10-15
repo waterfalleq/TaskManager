@@ -47,9 +47,13 @@ def get_tasks_by_user_handler(
     ),
     limit: int = Query(100, description="Maximum number of tasks to return"),
     offset: int = Query(0, description="Number of tasks to skip"),
-    order_by: str = Query("created_at", description="Sort by 'created_at' or 'deadline'"),
+    order_by: str = Query(
+        "created_at", description="Sort by 'created_at' or 'deadline'"
+    ),
     order_dir: str = Query("asc", description="Sort direction: 'asc' or 'desc'"),
-    show_completed: bool = Query(True, description="Whether to include completed tasks")
+    show_completed: bool = Query(
+        True, description="Whether to include completed tasks"
+    ),
 ):
     """Retrieve all tasks belonging to the current user with filters and sorting."""
     tasks = get_tasks_by_user(

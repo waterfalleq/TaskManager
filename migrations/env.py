@@ -13,12 +13,18 @@ fileConfig(config.config_file_name)
 
 # Import metadata from models
 from app.db.database import Base
+
 target_metadata = Base.metadata
 
 # Select database URL based on ENV
 env = os.getenv("ENV", "local")
-db_url = os.getenv("DATABASE_URL_DOCKER") if env == "docker" else os.getenv("DATABASE_URL_LOCAL")
+db_url = (
+    os.getenv("DATABASE_URL_DOCKER")
+    if env == "docker"
+    else os.getenv("DATABASE_URL_LOCAL")
+)
 config.set_main_option("sqlalchemy.url", db_url)
+
 
 def run_migrations_offline():
     context.configure(
@@ -29,6 +35,7 @@ def run_migrations_offline():
     )
     with context.begin_transaction():
         context.run_migrations()
+
 
 def run_migrations_online():
     connectable = engine_from_config(
@@ -43,6 +50,7 @@ def run_migrations_online():
         )
         with context.begin_transaction():
             context.run_migrations()
+
 
 if context.is_offline_mode():
     run_migrations_offline()

@@ -39,7 +39,9 @@ def update_user_email(db: Session, user: User, new_email: EmailStr) -> User:
     return user
 
 
-def update_user_password(db: Session, user: User, old_password: str, new_password: str) -> User:
+def update_user_password(
+    db: Session, user: User, old_password: str, new_password: str
+) -> User:
     """Update an existing user's password."""
     if not verify_password(old_password, user.hashed_password):
         raise HTTPException(status_code=400, detail="Incorrect password")

@@ -5,6 +5,7 @@ from app.models.enums import TaskStatus, TaskPriority
 
 # ---------- COMMON FIXTURES ----------
 
+
 @pytest.fixture
 def sample_task_data():
     """Base task data for most tests"""
@@ -21,6 +22,7 @@ def sample_task_data():
 @pytest.fixture
 def create_task(client):
     """Helper fixture to create tasks easily"""
+
     def _create_task(**overrides):
         now = datetime.now(timezone.utc)
         base = {
@@ -34,10 +36,12 @@ def create_task(client):
         response = client.post("/tasks/", json=base)
         assert response.status_code == 200, response.text
         return response.json()
+
     return _create_task
 
 
 # ---------- CRUD TESTS ----------
+
 
 def test_create_task(client, test_user, sample_task_data):
     response = client.post("/tasks/", json=sample_task_data)
@@ -87,6 +91,7 @@ def test_delete_task(client, create_task):
 
 # ---------- FILTERING / SEARCH ----------
 
+
 def test_search_tasks(client, create_task):
     create_task(title="Find Me Task")
     resp = client.get("/tasks/search?title=Find")
@@ -98,7 +103,9 @@ def test_search_tasks(client, create_task):
 
 def test_get_tasks_with_filters(client, create_task):
     create_task(priority=TaskPriority.HIGH.value, status=TaskStatus.TODO.value)
-    resp = client.get("/tasks/?priority=high&status=to-do&order_by=created_at&order_dir=asc")
+    resp = client.get(
+        "/tasks/?priority=high&status=to-do&order_by=created_at&order_dir=asc"
+    )
     assert resp.status_code == 200
     tasks = resp.json()
     assert tasks
@@ -174,8 +181,10 @@ def test_invalid_enum_filter(client):
 
 # ---------- PERMISSIONS ----------
 
+
 def test_forbidden_get_other_users_task(client, db_session):
     from app.models.models import Task, User
+
     now = datetime.now(timezone.utc)
 
     other_user = User(email="other@example.com", hashed_password="fake", created_at=now)
@@ -202,9 +211,12 @@ def test_forbidden_get_other_users_task(client, db_session):
 
 def test_forbidden_update_other_users_task(client, db_session):
     from app.models.models import Task, User
+
     now = datetime.now(timezone.utc)
 
-    other_user = User(email="other2@example.com", hashed_password="fake", created_at=now)
+    other_user = User(
+        email="other2@example.com", hashed_password="fake", created_at=now
+    )
     db_session.add(other_user)
     db_session.commit()
     db_session.refresh(other_user)
@@ -228,9 +240,12 @@ def test_forbidden_update_other_users_task(client, db_session):
 
 def test_forbidden_delete_other_users_task(client, db_session):
     from app.models.models import Task, User
+
     now = datetime.now(timezone.utc)
 
-    other_user = User(email="other3@example.com", hashed_password="fake", created_at=now)
+    other_user = User(
+        email="other3@example.com", hashed_password="fake", created_at=now
+    )
     db_session.add(other_user)
     db_session.commit()
     db_session.refresh(other_user)

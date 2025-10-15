@@ -34,5 +34,10 @@ def update_password(
     current_user: User = Depends(get_current_user),
 ):
     """Update the current user's password."""
-    update_user_password(db=db, user=current_user, old_password=request.old_password ,new_password=request.new_password)
+    update_user_password(
+        db=db,
+        user=current_user,
+        old_password=request.old_password,
+        new_password=request.new_password,
+    )
     return {"detail": "Password updated successfully"}

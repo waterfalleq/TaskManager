@@ -34,6 +34,7 @@ def db_session():
 
 from app.auth.hash import get_password_hash
 
+
 @pytest.fixture()
 def test_user(db_session):
     user = db_session.query(User).filter_by(email="test@example.com").first()
@@ -51,7 +52,6 @@ def test_user(db_session):
     return user
 
 
-
 @pytest.fixture()
 def client(db_session, test_user):
     def override_get_db():
@@ -67,6 +67,7 @@ def client(db_session, test_user):
         yield c
 
     app.dependency_overrides.clear()
+
 
 @pytest.fixture(autouse=True)
 def clean_tables(db_session):
